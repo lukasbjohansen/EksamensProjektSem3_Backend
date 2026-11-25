@@ -1,4 +1,6 @@
 
+using restApi.Services;
+
 namespace restApi;
 
 public class Program
@@ -12,6 +14,9 @@ public class Program
         builder.Services.AddControllers();
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
+
+        builder.Services.AddSingleton<MeasurementsRepoList>(new MeasurementsRepoList());
+        builder.Services.AddHostedService<MockDataFeedService>();
 
         var app = builder.Build();
 
