@@ -2,10 +2,14 @@
 {
     public class Measurement
     {
-        private int Id { get; set; }
-        private double Temperature { get; set; }
-        private double Humidity { get; set; }
-        private DateTime MeasuredAt { get; set; }
+        public int Id { get; private set; }
+        public double Temperature { get; private set; }
+        public double Humidity { get; private set; }
+        public DateTime MeasuredAt { get; private set; }
+
+        private Measurement()
+        {
+        }
 
         public Measurement(int id, double temperature, double humidity, DateTime measuredAt)
         {
