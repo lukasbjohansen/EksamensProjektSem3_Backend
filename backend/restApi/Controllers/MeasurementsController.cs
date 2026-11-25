@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using restApi.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,18 +9,36 @@ namespace restApi.Controllers
     [ApiController]
     public class MeasurementsController : ControllerBase
     {
+        private readonly MeasurementsRepoList _measurementService;
+        public MeasurementsController(MeasurementsRepoList measurementService)
+        {
+            _measurementService = measurementService;
+        }
         // GET: api/<MeasurementsController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public ActionResult<IEnumerable<Measurement>> Get()
         {
-            return new string[] { "value1", "value2" };
+            if (_measurementService.Count == 0)
+            {
+                return NoContent();
+            }
+            return Ok(_measurementService.GetAllMeasurements());
         }
 
         // GET api/<MeasurementsController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Measurement> Get(int id)
         {
-            return "value";
+            Measurement? measurement = _measurementService.GetMeasurementById(id);
+            if (measurement == null)
+            {
+                return NotFound();
+            }
+            return Ok(measurement);
         }
 
         // POST api/<MeasurementsController>

@@ -4,6 +4,7 @@
     {
         private List<Measurement> _measurements;
         private int _nextId = 1;
+        public int Count { get { return _measurements.Count; } }
         public MeasurementsRepoList(bool mockData = false)
         {
             _measurements = new List<Measurement>();
