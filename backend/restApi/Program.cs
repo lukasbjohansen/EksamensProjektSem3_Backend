@@ -36,7 +36,7 @@ public class Program
         builder.Services.AddOpenApi();
 
         // --StartMockdataFeeder
-        builder.Services.AddHostedService<MockDataFeedService>();
+        //builder.Services.AddHostedService<MockDataFeedService>();
 
         var app = builder.Build();
 

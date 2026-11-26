@@ -43,8 +43,16 @@ namespace restApi.Controllers
 
         // POST api/<MeasurementsController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult Post([FromBody] Measurement value)
         {
+            if (value == null)
+            {
+                return BadRequest();
+            }
+            Measurement measurement = _measurementService.AddMeasurement(value);
+            return CreatedAtAction(nameof(Get), new { id = measurement.Id }, measurement);
         }
 
         // PUT api/<MeasurementsController>/5
