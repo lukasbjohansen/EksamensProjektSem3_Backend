@@ -11,15 +11,14 @@
         {
         }
 
-        public Measurement(int id, double temperature, double humidity, DateTime measuredAt)
-        {
-            Id = id;
-            Temperature = temperature;
-            Humidity = humidity;
-            MeasuredAt = measuredAt;
-        }
+		public Measurement(double temperature, double humidity)
+		{
+			Temperature = temperature;
+			Humidity = humidity;
+			MeasuredAt = DateTime.UtcNow;
+		}
 
 
 
-    }
+	}
 }
