@@ -1,4 +1,5 @@
 
+using Microsoft.EntityFrameworkCore;
 using restApi.Services;
 
 namespace restApi;
@@ -23,13 +24,17 @@ public class Program
                                       });
         });
 
+        var optionsBuilder = new DbContextOptionsBuilder<MeasurementsDbContext>();
+        optionsBuilder.UseSqlServer(Secret.ConnectionString);
+        MeasurementsDbContext context = new MeasurementsDbContext(optionsBuilder.Options);
+        builder.Services.AddSingleton<IMeasurementsRepo>(new MeasurementsRepoDbEfCore(context));
 
         builder.Services.AddControllers();
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
 
         // --Dependency Injection
-        builder.Services.AddSingleton<MeasurementsRepoList>(new MeasurementsRepoList());
+        builder.Services.AddSingleton<IMeasurementsRepo>(new MeasurementsRepoList());
         // --StartMockdataFeeder
         builder.Services.AddHostedService<MockDataFeedService>();
 

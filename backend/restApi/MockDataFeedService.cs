@@ -4,8 +4,8 @@ namespace restApi
 {
     public class MockDataFeedService : BackgroundService
     {
-        private readonly MeasurementsRepoList _measurementsRepo;
-        public MockDataFeedService(MeasurementsRepoList measurementsRepo)
+        private readonly IMeasurementsRepo _measurementsRepo;
+        public MockDataFeedService(IMeasurementsRepo measurementsRepo)
         {
             _measurementsRepo = measurementsRepo;
         }

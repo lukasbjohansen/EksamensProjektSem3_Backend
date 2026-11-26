@@ -9,8 +9,8 @@ namespace restApi.Controllers
     [ApiController]
     public class MeasurementsController : ControllerBase
     {
-        private readonly MeasurementsRepoList _measurementService;
-        public MeasurementsController(MeasurementsRepoList measurementService)
+        private readonly IMeasurementsRepo _measurementService;
+        public MeasurementsController(IMeasurementsRepo measurementService)
         {
             _measurementService = measurementService;
         }
