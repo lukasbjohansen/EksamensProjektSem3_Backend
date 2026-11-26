@@ -25,8 +25,10 @@ public class Program
         });
 
         // --Database connection string and dependency injection for the MeasurementsRepoDbEfCore
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+            ?? throw new InvalidOperationException("Connection string 'DefaultConnection' blev ikke fundet.");
         builder.Services.AddDbContext<MeasurementsDbContext>(options =>
-            options.UseSqlServer(Secret.ConnectionString));
+            options.UseSqlServer(connectionString));
         builder.Services.AddScoped<IMeasurementsRepo, MeasurementsRepoDbEfCore>();
 
         builder.Services.AddControllers();
