@@ -16,7 +16,7 @@ namespace restApi
                 // Simulate adding a new measurement every 5 seconds
                 var newMeasurement = new Measurement
                 {
-                    Temperature = new Random().NextDouble() * 100,
+                    Temperature = -5 + new Random().NextDouble() * 45,
                     Humidity = new Random().NextDouble() * 100,
                     Time = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds()
                 };
