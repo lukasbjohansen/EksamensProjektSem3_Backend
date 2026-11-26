@@ -1,31 +1,35 @@
 ﻿using restApi.Services;
 
-namespace restApi
+public class MockDataFeedService : BackgroundService
 {
-    public class MockDataFeedService : BackgroundService
+    private readonly IServiceProvider _serviceProvider;
+
+    public MockDataFeedService(IServiceProvider serviceProvider)
     {
-        private readonly IMeasurementsRepo _measurementsRepo;
-        public MockDataFeedService(IMeasurementsRepo measurementsRepo)
+        _serviceProvider = serviceProvider;
+    }
+
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        while (!stoppingToken.IsCancellationRequested)
         {
-            _measurementsRepo = measurementsRepo;
-        }
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            while(!stoppingToken.IsCancellationRequested)
+            var newMeasurement = new Measurement
             {
-                // Simulate adding a new measurement every 5 seconds
-                var newMeasurement = new Measurement
-                {
-                    Temperature = -5 + new Random().NextDouble() * 45,
-                    Humidity = new Random().NextDouble() * 100,
-                    Time = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds()
-                };
-                // Here you would typically add the new measurement to your repository or database
+                Temperature = -5 + new Random().NextDouble() * 45,
+                Humidity = new Random().NextDouble() * 100,
+                Time = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+            };
+
+            // Create a scope for the scoped service
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var measurementsRepo = scope.ServiceProvider.GetRequiredService<IMeasurementsRepo>();
                 Console.WriteLine($"New Measurement Added: Id={newMeasurement.Id}, Temp={newMeasurement.Temperature}, Humidity={newMeasurement.Humidity}, Time={newMeasurement.Time}");
-                _measurementsRepo.AddMeasurement(newMeasurement);
-                Task.Delay(5000, stoppingToken).Wait();
+                measurementsRepo.AddMeasurement(newMeasurement);
             }
-            return Task.CompletedTask;
+
+            Task.Delay(5000, stoppingToken).Wait();
         }
+        return Task.CompletedTask;
     }
 }
