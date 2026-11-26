@@ -40,9 +40,30 @@ namespace restApi.Controllers
             }
             return Ok(measurement);
         }
+		// GET api/Measurements/statistics
+		[HttpGet("statistics")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status204NoContent)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		public ActionResult<MeasurementStatistics> GetStatistics(int startTime, int endTime)
+		{
+			if (startTime > endTime)
+			{
+				return BadRequest("Starttidspunktet skal være før sluttidspunktet.");
+			}
 
-        // POST api/<MeasurementsController>
-        [HttpPost]
+			MeasurementStatistics? statistics =
+				_measurementService.GetStatisticsByPeriod(startTime, endTime);
+
+			if (statistics == null)
+			{
+				return NoContent();
+			}
+
+			return Ok(statistics);
+		}
+		// POST api/<MeasurementsController>
+		[HttpPost]
         public void Post([FromBody] string value)
         {
         }
@@ -58,5 +79,7 @@ namespace restApi.Controllers
         public void Delete(int id)
         {
         }
+
+
     }
 }

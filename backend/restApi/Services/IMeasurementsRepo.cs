@@ -6,5 +6,9 @@ public interface IMeasurementsRepo
 
     Measurement AddMeasurement(Measurement measurement);
     IEnumerable<Measurement> GetAllMeasurements();
-    Measurement? GetMeasurementById(int id);
+	Measurement? GetMeasurementById(int id);
+
+	IEnumerable<Measurement> GetMeasurementsByPeriod(int startTime, int endTime);
+
+	MeasurementStatistics? GetStatisticsByPeriod(int startTime, int endTime);
 }
